@@ -28,6 +28,7 @@ public abstract class BaseServlet implements Servlet {
 	/** the root path of this web application */
 	public static final String WEBAPP_ALIAS = "/";
 		
+	protected SecureHttpContext secureHttpContext;
 	protected HttpService httpService;
 	protected ItemRegistry itemRegistry;
 
@@ -55,7 +56,8 @@ public abstract class BaseServlet implements Servlet {
 	 */
 	protected HttpContext createHttpContext() {
 		HttpContext defaultHttpContext = httpService.createDefaultHttpContext();
-		return new SecureHttpContext(defaultHttpContext, "openHAB.org");
+		secureHttpContext = new SecureHttpContext(defaultHttpContext, "openHAB.org");
+		return secureHttpContext;
 	}
 	
 	/**

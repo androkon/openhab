@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.net.util.Base64;
+import org.eclipse.jetty.plus.jaas.JAASRole;
 import org.eclipse.jetty.plus.jaas.callback.ObjectCallback;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
@@ -60,6 +61,8 @@ public class SecureHttpContext implements HttpContext, ManagedService {
 	private static SecurityOptions securityOptions = SecurityOptions.OFF;
 	
 	private static Set<IpAddressMatcher> ipAddressMatchers = new HashSet<IpAddressMatcher>();
+	
+	protected Subject subject = null;
 	
 	public SecureHttpContext() {
 		// default constructor
@@ -231,6 +234,7 @@ public class SecureHttpContext implements HttpContext, ManagedService {
 				
 				Subject subject = authenticate(realm, username, password);
 				if (subject != null) {
+					this.subject = subject;
 					request.setAttribute(
 							HttpContext.AUTHENTICATION_TYPE,
 							HttpServletRequest.BASIC_AUTH);
@@ -292,8 +296,6 @@ public class SecureHttpContext implements HttpContext, ManagedService {
 				});
 			lContext.login();
 
-			// TODO: TEE: implement role handling here!
-			
 			return subject;
 		}
 		catch (LoginException le) {
@@ -352,6 +354,14 @@ public class SecureHttpContext implements HttpContext, ManagedService {
 	 */
 	enum SecurityOptions {
 		ON, EXTERNAL, OFF;
+	}
+	
+	public boolean checkSitemap(String name){
+		if(subject == null)
+			return false;
+		Set<JAASRole> roles = this.subject.getPrincipals(JAASRole.class);
+		JAASRole role = new JAASRole(name);
+		return roles.contains(role);
 	}
 	
 	

@@ -103,12 +103,19 @@ public class WebAppServlet extends BaseServlet {
 		boolean async = "true".equalsIgnoreCase((String) req.getParameter("__async"));
 		boolean poll = "true".equalsIgnoreCase((String) req.getParameter("poll"));
 				
-		// if there are no parameters, display the "default" sitemap
-		if(sitemapName==null) sitemapName = "default";
+		// if there are no parameters, display the "demo" sitemap
+		if(sitemapName==null)
+			throw new ServletException("Sitemap not specified");
 		
 		StringBuilder result = new StringBuilder();
 		
-		Sitemap sitemap = sitemapProvider.getSitemap(sitemapName);
+		Sitemap sitemap;
+		
+		if(! secureHttpContext.checkSitemap(sitemapName))
+			sitemap = null;
+		else
+			sitemap = sitemapProvider.getSitemap(sitemapName);
+
 		try {
 			if(sitemap==null) {
 				throw new RenderException("Sitemap '" + sitemapName + "' could not be found");

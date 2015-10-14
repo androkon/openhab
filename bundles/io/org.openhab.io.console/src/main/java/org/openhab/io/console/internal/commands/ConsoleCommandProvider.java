@@ -32,11 +32,11 @@ public class ConsoleCommandProvider implements CommandProvider {
 	protected static ScriptEngine scriptEngine;
 
 	protected void setScriptEngine(ScriptEngine scriptEngine) {
-		this.scriptEngine = scriptEngine;
+		ConsoleCommandProvider.scriptEngine = scriptEngine;
 	}
 
 	protected void unsetScriptEngine(ScriptEngine scriptEngine) {
-		this.scriptEngine = null;
+		ConsoleCommandProvider.scriptEngine = null;
 	}
 
 	/**

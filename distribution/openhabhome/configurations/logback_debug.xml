@@ -41,7 +41,8 @@
 	<logger name="org.openhab.ui.webapp.internal.servlet" level="INFO" />
 	<logger name="org.openhab.io.net" level="INFO" />
 	<logger name="org.openhab.core.autoupdate" level="DEBUG" />
-	<logger name="org.openhab.core.persistence.internal" level="TRACE" />
+	<logger name="org.openhab.core.persistence.internal" level="DEBUG" />
+	<logger name="org.openhab.persistence.rrd4j.internal.RRD4jService" level="INFO" />
 	<logger name="org.openhab.core.transform.internal.service.MapTransformationService" level="INFO" />
 	<logger name="org.openhab.binding.vdr" level="DEBUG" />
 	<logger name="org.openhab.model.core.internal.folder" level="INFO" />
